@@ -30,25 +30,29 @@ def getDataObject(row, sheet):
 			)
 	raise Exception('no this sheet')
 
+def getIterChank(iter, offset):
+	__break = False
+	data = []
+	for x in range(offset):
+		try:
+			row = next(iter)
+		except:
+			__break = True
+			break
+		data.append(row)
+	return __break, data
+
 def workData(**args):
 	def f(iter):
-		__args = args
+		#title
 		row = next(iter)
 		# print('\r\n'.join([str(x) for x in row]))
 		i = 0
-		__break = False
 		while True:
 			i += 1
-			data = []
-			for x in range(args.get('offset', 1)):
-				try:
-					row = next(iter)
-				except:
-					__break = True
-					break
-				data.append(row)
-			args.get('handler').save((getDataObject(x, __args.get('sheet')) for x in data))
-			if (__args.get('limit', True) and i == 10) or __break: break
+			__break, data = getIterChank(iter, args.get('offset', 1))
+			args.get('handler').save((getDataObject(x, args.get('sheet')) for x in data))
+			if (args.get('limit', True) and i == 10) or __break: break
 
 	return f
 
