@@ -1,0 +1,29 @@
+version: "3.1"
+services:
+  app:
+    build: .
+    container_name: price-save-app
+    working_dir: /app
+    volumes:
+      - ./src:/app
+      - .:/data
+    environment:
+      DB: ${DB_NAME}
+      PORT: ${DB_PORT}
+      HOST: ${DB_HOST}
+      USER: ${DB_USER}
+      PASS: ${DB_PASS}
+      FILE: ${FILE_DATA}
+    links:
+        - postgres:postgres
+
+  postgres:
+      image: postgres:11
+      container_name: app-postgres
+      ports:
+        - "${DB_PORT}:${DB_PORT}"
+      volumes:
+        - /home/pop/work/pg_data_11:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_PASSWORD=${BD_PASS}
+        - POSTGRES_USER=${BD_USER}
