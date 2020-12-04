@@ -14,16 +14,3 @@ services:
       USER: ${DB_USER}
       PASS: ${DB_PASS}
       FILE: ${FILE_DATA}
-    links:
-        - postgres:postgres
-
-  postgres:
-      image: postgres:11
-      container_name: app-postgres
-      ports:
-        - "${DB_PORT}:${DB_PORT}"
-      volumes:
-        - /home/pop/work/pg_data_11:/var/lib/postgresql/data
-      environment:
-        - POSTGRES_PASSWORD=${BD_PASS}
-        - POSTGRES_USER=${BD_USER}
